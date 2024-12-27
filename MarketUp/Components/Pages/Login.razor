@@ -1,0 +1,118 @@
+﻿@page "/"
+@using Microsoft.Extensions.Localization
+
+<div class="container-md">
+    <div class="row vh-100 d-flex justify-content-center">
+        <div class="col-12 align-self-center">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-4 mx-auto">
+                        <div class="card">
+                            <div class="card-body p-0">
+                                <div class="text-center p-3">
+                                    <div class="row">
+                                        <div class="col-sm-3"></div>
+                                        <div class="col-sm-5">
+                                            <a href="/" class="logo logo-admin">
+                                                <img src="~/images/assets/logo.svg" height="50" alt="logo" class="auth-logo">
+                                            </a>
+                                        </div>
+                                        <div class="col-sm-4 text-end">
+
+                                            @*  @if (cultureList != null && cultureList.Any() && currentCulture != null)
+                                            {
+                                            <div class="dropdown">
+                                            <button class="btn text-muted btn-sm dropdown-toggle" type="button" id="dropdownLangButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img src="/images/languages/@(selectedCulture).svg" alt="" style="width: 20px;"> @currentCulture.Name
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownLangButton">
+                                            @foreach (var cultureItem in cultureList.Where(w => w.Id != selectedCulture))
+                                            {
+                                            <li>
+                                            <a class="dropdown-item" asp-area="" asp-action="ChangeLanguage" asp-controller="Home" asp-route-returnUrl="@returnUrl" asp-route-culture="@(cultureItem.Id)">
+                                            <img src="/images/languages/@(cultureItem.Id).svg" alt="" style="width: 20px;"> @(cultureItem.Name)
+                                            </a>
+                                            </li>
+                                            }
+                                            </ul>
+                                            </div>
+                                            } *@
+                                        </div>
+                                    </div>
+                                    <h4 class="mt-3 mb-1 fw-semibold font-18">@Localizer["SpotTradingSystem"]</h4>
+                                    <p class="text-muted  mb-0">@Localizer["UzCommExchange"]</p>
+                                </div>
+                            </div>
+                            <hr class="hr-dashed">
+                            <div class="card-body pt-0">
+                                <form asp-action="Login" method="post" id="loginForm" asp-antiforgery="true" class="mb-4">
+                                    <div class="form-group mb-2">
+                                        <label class="form-label" for="login">@Localizer["Login"]</label>
+                                        <input type="text" maxlength="20" class="form-control" id="login" name="login" placeholder="@Localizer["EnterLogin"]" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="password">@Localizer["Password"]</label>
+                                        <div class="main-password">
+                                            <input type="password" maxlength="20" class="form-control" name="password" required id="password" placeholder="@Localizer["EnterParol"]">
+                                            <a class="icon-view">
+                                                <i class="fa fa-eye" id="eye"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group row mt-3">
+                                        <div class="col-sm-6">
+                                            <div class="form-check form-switch form-switch-success">
+                                                <input class="form-check-input" type="checkbox" id="customSwitchSuccess">
+                                                <label class="form-check-label" for="customSwitchSuccess">@Localizer["RememberMe"]</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6 text-end">
+                                            <a href="#" onclick="resetPassword()" class="text-muted font-13">
+                                                <i class="dripicons-lock"></i> @Localizer["ForgotPassword"]
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group mb-0 row">
+                                        <div class="col-12">
+                                            <div class="d-grid mt-3">
+                                                <button class="btn btn-primary" type="button" id="loginButtonForm" onclick="return proceedForm(this,true);">
+                                                    @Localizer["Submit"] <i class="fas fa-sign-in-alt ms-1"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="m-3 text-center text-muted">
+                                    <p class="mb-0">
+                                        @*   @Localizer["DoNotHaveAnAcc"] <a href="@Url.Action("Index","Register")" class="text-primary ms-2">@Localizer["Register"]</a> *@
+                                    </p>
+                                </div>
+                                <hr class="hr-dashed mt-4">
+                                <div class="text-center mt-n5">
+                                    <h6 class="card-bg px-3 my-4 d-inline-block">@Localizer["OrLoginWith"]</h6>
+                                </div>
+                                <div class="d-flex justify-content-center mb-1">
+                                    <div class="d-flex align-items-center">
+                                        <button onclick="loginEsi()" class="border-0 thumb-sm bg-soft-secondary rounded-circle me-1 not-hover">
+                                            <img src="~/images/assets/esilogo.png" height="30" alt="logo">
+                                        </button>
+                                        <span class="d-none d-lg-block fw-semibold font-12 me-2 morris-hover">@Localizer["EDS"]</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    // @inject IViewLocalizer Localizer
+    @inject IStringLocalizer<Login> Localizer
+    }
+

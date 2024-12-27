@@ -1,0 +1,71 @@
+﻿@using MarketUp.Dtos
+@using MarketUp.Services
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Options
+@using System.Collections
+
+@inject IHttpContextAccessor HttpContextAccessor
+@inject IOptions<RequestLocalizationOptions> LocOptions
+@inject HandbookService service
+
+@if (cultureList != null && cultureList.Any() && currentCulture != null)
+{
+
+    <button class="btn text-muted btn-md dropdown-toggle" type="button" id="dropdownLangButton" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #f5f5f9;">
+        <img src="/images/languages/@(selectedCulture).svg" alt="" style="width: 20px;"> @currentCulture.Name
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownLangButton">
+        @foreach (var cultureItem in cultureList.Where(w => w.Id != selectedCulture))
+        {
+            <li class="m-0 w-100">
+                <a class="dropdown-item" asp-area="" asp-action="ChangeLanguage" asp-controller="Home" asp-route-returnUrl="@returnUrl" asp-route-culture="@(cultureItem.Id)">
+                    <img src="/images/languages/@(cultureItem.Id).svg" alt="" style="width: 20px;"> @(cultureItem.Name)
+                </a>
+            </li>
+        }
+    </ul>
+}
+
+<style>
+    .header__languages .dropdown-menu {
+        min-width: 10% !important;
+    }
+
+    .dropdown-toggle::after {
+        display: inline-block;
+        margin-left: 0.255em;
+        vertical-align: 0.255em;
+        content: "";
+        border-top: 0.3em solid;
+        border-right: 0.3em solid transparent;
+        border-bottom: 0;
+        border-left: 0.3em solid transparent;
+    }
+</style>
+
+@code {
+    private IEnumerable<CultureDto> cultureList;
+    private string selectedCulture;
+    private CultureDto currentCulture;
+    private string returnUrl; 
+    // private HttpContext HttpContext { get; set; }
+    private Microsoft.AspNetCore.Http.HttpContext HttpContext => HttpContextAccessor.HttpContext;
+    protected override async void OnInitialized()
+    {        
+        await LongRunningOperation();    
+
+        if(HttpContext != null)
+        {
+            var cultureFeature = HttpContext?.Features?.Get<IRequestCultureFeature>();
+            selectedCulture = cultureFeature?.RequestCulture.Culture.Name ?? "uz";
+            returnUrl = string.IsNullOrWhiteSpace(HttpContext?.Request.Path) ? "~/" : $"~{HttpContext?.Request.Path}{HttpContext?.Request.QueryString}";
+            currentCulture = cultureList.FirstOrDefault(a => a.Id == selectedCulture);
+        }
+               
+    }
+
+    private async Task LongRunningOperation()
+    {     
+        cultureList = await service.GetCultures();
+    }
+}

@@ -1,0 +1,34 @@
+﻿@using MarketUp.Services
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Mvc.Localization
+@inherits LayoutComponentBase
+@inject IOptions<RequestLocalizationOptions> LocOptions
+
+<div class="page">
+    <main>
+        <header class="card-header">
+            <div class="header__top">
+                <div class="container">
+                    <div class="header__top-inner">
+                        <div class="header__right">
+                            <div class="header__languages">
+                                <MarketUp.Shared._LanguageDropdown />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>

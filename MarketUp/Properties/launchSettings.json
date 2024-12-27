@@ -1,0 +1,10 @@
+{
+    "profiles": {
+      "MarketUp": {
+        "commandName": "Project",
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "DEVELOPMENT"
+        },
+        "applicationUrl": "http://localhost:5209"
+      }
+  }
