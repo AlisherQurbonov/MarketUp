@@ -1,14 +1,18 @@
-﻿using MarketUpApi.Extensions;
+﻿using MarketUpApi.Data;
+using MarketUpApi.Extensions;
 using MarketUpApi.Filters;
 using MarketUpApi.Helpers;
 using MarketUpApi.Middlewares;
 using MarketUpApi.Rest;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Net;
+using System.Text;
 
 namespace MarketUpApi
 {
@@ -34,20 +38,14 @@ namespace MarketUpApi
         public IWebHostEnvironment Environment { get; }
 
         public void ConfigureServices(IServiceCollection services)
-        {        
+        {
+            services.AddHttpClient();
             services.AddHttpContextAccessor();
+            services.AddDbContext<AppDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-            //services.AddDbContext<IAppDbContext, AppDbContext>(options =>
-            //{
-            //    options.UseOracle(Configuration.GetConnectionString("DefaultConnection"));
-
-            //    if (Environment.IsDevelopment())
-            //    {
-            //        options.EnableDetailedErrors()
-            //            .EnableSensitiveDataLogging();
-            //    }
-            //});
-
+            services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
 
             //services.AddTransient<AwpSubscriptionService>();
 
@@ -82,12 +80,14 @@ namespace MarketUpApi
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateLifetime = true,
-                        ValidateAudience = false,
+                        ValidateAudience = true,
                         ValidateIssuerSigningKey = true,
                         ValidateTokenReplay = true,
                         ValidateActor = false,
                         ValidateIssuer = true,
-                        ValidIssuer = $"MarketUp/auth/realms/test"
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                     };
                     options.Events = new JwtBearerEvents
                     {

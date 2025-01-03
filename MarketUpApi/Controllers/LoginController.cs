@@ -10,11 +10,11 @@ namespace MarketUpApi.Controllers
         {
         }
 
-        [HttpPost("login")]
-        [ProducesDefaultResponseType(typeof(ApiResponse<LoginModel>))]
-        public async Task<IActionResult> Login([FromBody] LoginModel login)
-        {
-            return Ok();
-        }
+        //[HttpPost("login")]
+        //[ProducesDefaultResponseType(typeof(ApiResponse<LoginModel>))]
+        //public async Task<IActionResult> Login([FromBody] LoginModel login)
+        //{
+        //    return Ok();
+        //}
     }
 }

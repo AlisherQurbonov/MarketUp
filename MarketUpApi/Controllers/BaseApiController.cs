@@ -1,4 +1,5 @@
 ﻿using MarketUpApi.Rest;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -6,6 +7,7 @@ namespace MarketUpApi.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
+    //[Authorize]
     [Produces(ApiResponseType.JsonResponse)]
     public abstract class BaseApiController : ControllerBase
     {
