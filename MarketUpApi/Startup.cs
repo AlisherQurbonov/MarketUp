@@ -73,7 +73,7 @@ namespace MarketUpApi
             })
                 .AddJwtBearer(options =>
                 {
-                    options.MetadataAddress = $"MarketUp/auth/realms/test/.well-known/openid-configuration";
+                    //options.MetadataAddress = $"MarketUp/auth/realms/test/.well-known/openid-configuration";
                     options.RequireHttpsMetadata = false;
                     options.IncludeErrorDetails = true;
 
@@ -110,11 +110,7 @@ namespace MarketUpApi
                     };
                 });
             services.AddAuthorization();
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAll", builder => builder.SetIsOriginAllowed(a => true).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
-            });
-
+           
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo
@@ -138,6 +134,8 @@ namespace MarketUpApi
         public void Configure(IApplicationBuilder app)
         {
             app.UseAppException();
+
+            app.UseHttpsRedirection();
 
             app.UseCors("AllowAll");
 

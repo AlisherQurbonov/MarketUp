@@ -16,7 +16,7 @@ namespace MarketUpApi.Controllers
             _configuration = configuration;
         }
 
-        [HttpPost("login")]
+        [HttpPost]
         public IActionResult Login([FromBody] LoginModel userLogin)
         {
             if (userLogin.UserName == "testuser" && userLogin.Password == "password") // Foydalanuvchini tekshirish
@@ -43,7 +43,7 @@ namespace MarketUpApi.Controllers
                 _configuration["Jwt:Issuer"],
                 _configuration["Jwt:Audience"],
                 claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddMinutes(15),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

@@ -1,5 +1,6 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
+﻿using MarketUpApi.Models;
 using MarketUpApi.Rest;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarketUpApi.Controllers
@@ -10,11 +11,12 @@ namespace MarketUpApi.Controllers
         {
         }
 
-        //[HttpPost("login")]
-        //[ProducesDefaultResponseType(typeof(ApiResponse<LoginModel>))]
-        //public async Task<IActionResult> Login([FromBody] LoginModel login)
-        //{
-        //    return Ok();
-        //}
+        [Authorize]
+        [HttpPost]      
+        [ProducesDefaultResponseType(typeof(ApiResponse<LoginModel>))]
+        public async Task<IActionResult> Login([FromBody] LoginModel login)
+        {
+            return Ok();
+        }
     }
 }
