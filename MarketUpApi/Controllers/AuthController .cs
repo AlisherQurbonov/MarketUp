@@ -19,7 +19,7 @@ namespace MarketUpApi.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] LoginModel userLogin)
         {
-            if (userLogin.UserName == "testuser" && userLogin.Password == "password") // Foydalanuvchini tekshirish
+            if (userLogin.UserName == "testuser" && userLogin.Password == "password") 
             {
                 var token = GenerateJwtToken(userLogin.UserName);
                 return Ok(new { token });
