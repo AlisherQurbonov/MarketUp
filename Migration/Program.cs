@@ -3,17 +3,18 @@
 namespace Migration
 {
     public static class Program
-    {     
-        private static async Task MigrateDb(IConfigurationRoot configuration)
+    {
+        private static async Task Main(string[] args)
         {
-            var connectionString = configuration["ConnectionStrings:DefaultConnection"];
-            var factory = new AppDbContextFactory(connectionString);
+            Console.Title = "MarketUp Migrator";
 
-            await using var db = factory.CreateDbContext(null);
-            if (await db.Database.CanConnectAsync())
-                await db.Database.EnsureCreatedAsync();
-                Console.WriteLine("DB:ok ...");
+            var factory = new AppDbContextFactory();
 
+            await using var db = factory.CreateDbContext(args);
+           
+            Console.WriteLine("Database:ok ...");
+         
+            Console.WriteLine("Done!");
         }
     }
 }

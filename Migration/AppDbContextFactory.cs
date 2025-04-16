@@ -1,17 +1,23 @@
 ﻿using MarketUpApi.Data;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Migration
 {
     public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
     {
         private readonly string _connectionString;
-        private const string NamespaceName = "ID.Migrator";
+        private const string NamespaceName = "MarketUp.Migrator";
 
-        public AppDbContextFactory(string connectionString)
+        public AppDbContextFactory()
         {
-            _connectionString = connectionString;
+            var builder = new ConfigurationBuilder()
+           .AddJsonFile("appsettings.json", false, true)
+           .AddEnvironmentVariables();
+            var configuration = builder.Build();
+
+            _connectionString = configuration["ConnectionStrings:DefaultConnection"]; ;
         }
 
         public AppDbContext CreateDbContext(string[] args)
