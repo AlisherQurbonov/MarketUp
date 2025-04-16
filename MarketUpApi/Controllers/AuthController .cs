@@ -10,10 +10,12 @@ namespace MarketUpApi.Controllers
     public class AuthController : BaseApiController
     {
         private readonly IConfiguration _configuration;
+        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(IConfiguration configuration)
+        public AuthController(IConfiguration configuration, ILogger<AuthController> logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         [HttpPost]

@@ -7,8 +7,11 @@ namespace MarketUpApi.Controllers
 {
     public class LoginController : BaseApiController
     {
-        public LoginController()
+        private readonly ILogger<LoginController> _logger;
+
+        public LoginController(ILogger<LoginController> logger)
         {
+            _logger = logger;
         }
 
         [Authorize]
@@ -16,7 +19,18 @@ namespace MarketUpApi.Controllers
         [ProducesDefaultResponseType(typeof(ApiResponse<LoginModel>))]
         public async Task<IActionResult> Login([FromBody] LoginModel login)
         {
+            try
+            {
+                _logger.LogInformation("Started");
+                
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.Message, "Not Found");
+            }
+
             return Ok();
+
         }
     }
 }
