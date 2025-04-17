@@ -32,20 +32,17 @@ namespace MarketUpApi
                     });
 
                     webBuilder.UseMetrics(options =>
-                    {
-                        var metrics = AppMetrics.CreateDefaultBuilder()
-                           .OutputMetrics.AsPrometheusPlainText()
-                            .Build();
+                    {                     
                         options.EndpointOptions = endpointsOptions =>
-                        {
-                            endpointsOptions.MetricsEndpointOutputFormatter =
-                                metrics.OutputMetricsFormatters
-                                       .OfType<MetricsPrometheusTextOutputFormatter>()
-                                       .First();
-
+                        {                         
                             endpointsOptions.MetricsTextEndpointEnabled = true;
                         };
                     });
+
+                    //webBuilder.ConfigureKestrel(options =>
+                    //{
+                    //    options.ListenAnyIP(5066);
+                    //});
 
                     webBuilder.UseStartup<Startup>();
                 });

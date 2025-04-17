@@ -1,10 +1,20 @@
 {
-    "profiles": {
-      "MarketUp": {
-        "commandName": "Project",
-        "environmentVariables": {
-          "ASPNETCORE_ENVIRONMENT": "DEVELOPMENT"
-        },
-        "applicationUrl": "http://localhost:5210"
-      }
+  "profiles": {
+    "MarketUp": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "DEVELOPMENT"
+      },
+      "applicationUrl": "http://localhost:5210"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "ASPNETCORE_HTTP_PORTS": "8080"
+      },
+      "publishAllPorts": true,
+      "useSSL": false
+    }
   }
+}
