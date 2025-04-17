@@ -136,8 +136,10 @@ namespace MarketUpApi
                           .OutputMetrics.AsPrometheusPlainText()
                           .Build();
           
-            services.AddHealthChecks();
-            services.AddMetrics(metrics);         
+            services.AddHealthChecks();         
+            services.AddMetrics(metrics);
+            services.AddMetricsTrackingMiddleware();
+            services.AddMetricsEndpoints();
         }
 
         public void Configure(IApplicationBuilder app)
@@ -158,11 +160,13 @@ namespace MarketUpApi
             }
            
             app.UseMiddleware<RequestLoggingMiddleware>();
-           
+
+            app.UseMetricsAllMiddleware();
+            app.UseMetricsAllEndpoints();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
-                endpoints.MapMetrics();
+                endpoints.MapControllers();               
             });
 
             app.UseSwagger();
