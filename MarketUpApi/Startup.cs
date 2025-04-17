@@ -13,6 +13,8 @@ using Serilog;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Net;
 using System.Text;
+using App.Metrics;
+using Prometheus;
 
 namespace MarketUpApi
 {
@@ -129,6 +131,13 @@ namespace MarketUpApi
                 });
 
             });
+
+            var metrics = AppMetrics.CreateDefaultBuilder()
+                          .OutputMetrics.AsPrometheusPlainText()
+                          .Build();
+          
+            services.AddHealthChecks();
+            services.AddMetrics(metrics);         
         }
 
         public void Configure(IApplicationBuilder app)
@@ -153,6 +162,7 @@ namespace MarketUpApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapMetrics();
             });
 
             app.UseSwagger();
@@ -164,8 +174,7 @@ namespace MarketUpApi
                 c.DefaultModelRendering(ModelRendering.Example);
 
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Market Api v1");
-            });
-
+            });       
         }
     }
 }

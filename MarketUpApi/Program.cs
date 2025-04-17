@@ -1,4 +1,5 @@
 using Serilog;
+using Serilog.Sinks.Grafana.Loki;
 
 namespace MarketUpApi
 {
@@ -23,8 +24,9 @@ namespace MarketUpApi
                         cnf.WriteTo.Console().MinimumLevel.Override("Microsoft.EntityFrameworkCore.Database.Command", Serilog.Events.LogEventLevel.Warning);
                         cnf.WriteTo.Debug();
                         cnf.WriteTo.File("Logs/web.log", rollingInterval: RollingInterval.Day, rollOnFileSizeLimit: true);
+                        cnf.WriteTo.GrafanaLoki("http://localhost:3100");                      
                     });
-
+                  
                     webBuilder.UseStartup<Startup>();
                 });
     }
