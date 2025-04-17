@@ -21,6 +21,11 @@ namespace MarketUpApi.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    _logger.LogError("Model not found");
+                }
+
                 _logger.LogInformation("Started");
                 
             }

@@ -21,13 +21,37 @@ namespace MarketUpApi.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] LoginModel userLogin)
         {
-            if (userLogin.UserName == "testuser" && userLogin.Password == "password") 
-            {
-                var token = GenerateJwtToken(userLogin.UserName);
-                return Ok(new { token });
-            }
+            var token = "";
 
-            return Unauthorized();
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    _logger.LogError("Model not found");
+                }
+
+                if (userLogin.UserName == "testuser" && userLogin.Password == "password")
+                {
+                    _logger.LogInformation("Generate JWT");
+                    token = GenerateJwtToken(userLogin.UserName);
+                }
+                else 
+                {
+                    _logger.LogError("UserName or password not found");
+                    return Unauthorized();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical(ex.Message);
+            }
+       
+            return Ok(
+                new 
+                {
+                    token 
+                });
         }
 
         private string GenerateJwtToken(string username)
@@ -37,15 +61,15 @@ namespace MarketUpApi.Controllers
 
             var claims = new[]
             {
-            new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.Role, "User")
-        };
+                new Claim(ClaimTypes.Name, username),
+                new Claim(ClaimTypes.Role, "User")
+            };
 
             var token = new JwtSecurityToken(
                 _configuration["Jwt:Issuer"],
                 _configuration["Jwt:Audience"],
                 claims,
-                expires: DateTime.Now.AddMinutes(15),
+                expires: DateTime.Now.AddDays(1),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
